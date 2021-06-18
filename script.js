@@ -2,6 +2,6 @@ function test() {
   alert('testing button');
 }
 
-function ChooseSquare(event) {
-  alert('In ChooseSquare');
+function chooseSquare(event) {
+  alert('In chooseSquare');
 }
