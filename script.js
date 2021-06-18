@@ -3,5 +3,5 @@ function test() {
 }
 
 function chooseSquare(event) {
-  alert('In chooseSquare');
+  alert(event.target.id);
 }
