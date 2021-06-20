@@ -1,12 +1,12 @@
-class GameUI {
-  game;
-  settings;
+function GameUI(settingsRepository) {
+  this.settings = settingsRepository;
+  this.game;
 
-  setCellIcon(row, cell, icon) {
+  this.setCellIcon = (row, cell, icon) => {
     document.getElementById(`square_${row}${cell}`).innerHTML = icon;
   }
 
-  updateGameBoard() {
+  this.updateGameBoard = () => {
     var playerIcon = Settings.getPlayerIcon();
     var computerIcon = Settings.getComputerIcon();
   
@@ -21,7 +21,7 @@ class GameUI {
       }
   }
 
-  chooseSquare(row, col) {
+  this.chooseSquare = (row, col) => {
     this.game.takePlayerTurn(row, col);
 
     if (!this.game.gameIsOver())
@@ -32,11 +32,7 @@ class GameUI {
       alert('Game Over');
   }
 
-  newGame() {
+  this.newGame = () => {
     this.game = new TicTacToe(this.settings);
-  }
-
-  constructor(settingsRepository) {
-    this.settings = settingsRepository;
   }
 }
