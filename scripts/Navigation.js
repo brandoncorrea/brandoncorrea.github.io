@@ -14,8 +14,8 @@ class Navigation {
     this.show(this.pages.game);
   }
 
-  hide = id => setDisplay(id, 'none');
-  show = id => setDisplay(id, 'block');
+  hide = id => document.getElementById(id).style.display = 'none';
+  show = id => document.getElementById(id).style.display = 'block';
 
   constructor() {
   }

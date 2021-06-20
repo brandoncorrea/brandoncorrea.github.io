@@ -1,11 +1,14 @@
-function createNewGame() {
+function onNewGameClicked() {
   Game.newGame();
+  Game.updateGameBoard();
   Nav.showGame();
 }
 
-function updateIcon(icon) {
+function onIconChanged(icon) {
   Settings.setPlayerIcon(icon);
   var iconIsX = Settings.getPlayerIcon() === 'X';
+
+  // Update computer icon
   if (iconIsX)
     Settings.setComputerIcon('O');
   else
@@ -15,7 +18,7 @@ function updateIcon(icon) {
   togglePositiveClass('userIconX', iconIsX);
 }
 
-function updatePlayerGoesFirst(flag) {
+function onFirstPlayerChanged(flag) {
   Settings.setPlayerGoesFirst(flag);
   var playerGoesFirst = Settings.getPlayerGoesFirst();
   togglePositiveClass('computerButton', !playerGoesFirst);
