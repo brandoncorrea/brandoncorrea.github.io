@@ -1,10 +1,14 @@
-class TicTacToe {
+function TicTacToe(settingsRepository) {
   // props
-  table;
+  this.table = [
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0]
+  ];
 
-  gameIsOver() {
+  this.gameIsOver = () =>
     // Top row
-    return (this.table[0][0] > 0
+    (this.table[0][0] > 0
       && this.table[0][1] > 0
       && this.table[0][2] > 0)
       ||
@@ -74,9 +78,8 @@ class TicTacToe {
       (this.table[2][0] < 0 
       && this.table[1][1] < 0
       && this.table[0][2] < 0)
-  }
 
-  takeComputerTurn() {
+  this.takeComputerTurn = () => {
     for (var r = 0; r < this.table.length; r++)
       for (var c = 0; c < this.table[r].length; c++)
         if (this.table[r][c] === 0) {
@@ -85,16 +88,9 @@ class TicTacToe {
         }
   }
 
-  takePlayerTurn = (row, cell) => this.table[row][cell] = 1;
+  this.takePlayerTurn = (row, cell) => this.table[row][cell] = 1;
   
-  constructor(settingsRepository) {
-    this.table = [
-      [0, 0, 0],
-      [0, 0, 0],
-      [0, 0, 0]
-    ];
-
-    if (!settingsRepository.getPlayerGoesFirst())
-      this.takeComputerTurn();
-  }
+  // constructor
+  if (!settingsRepository.getPlayerGoesFirst())
+    this.takeComputerTurn();
 }

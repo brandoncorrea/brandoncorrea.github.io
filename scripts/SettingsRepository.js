@@ -1,12 +1,12 @@
-class SettingsRepository {
-  keyNames = {
+function SettingsRepository() {
+  this.keyNames = {
     playerIcon: 'playerIcon',
     computerIcon: 'computerIcon',
     playerGoesFirst: 'playerGoesFirst'
   }
 
   // Getters
-  getPlayerIcon() {
+  this.getPlayerIcon = () => {
     var icon = localStorage.getItem(this.keyNames.playerIcon);
     if (icon !== null)
       return icon;
@@ -19,7 +19,7 @@ class SettingsRepository {
     return this.getPlayerIcon();
   }
 
-  getComputerIcon() {
+  this.getComputerIcon = () => {
     var icon = localStorage.getItem(this.keyNames.computerIcon);
     if (icon !== null)
       return icon;
@@ -32,16 +32,13 @@ class SettingsRepository {
     return this.getComputerIcon();
   }
 
-  getPlayerGoesFirst() {
+  this.getPlayerGoesFirst = () => {
     var flag = localStorage.getItem(this.keyNames.playerGoesFirst);
     return flag !== null && flag.toLowerCase() === 'true';
   }
   
   // Setters
-  setPlayerIcon = icon => localStorage.setItem(this.keyNames.playerIcon, icon);
-  setComputerIcon = icon => localStorage.setItem(this.keyNames.computerIcon, icon);
-  setPlayerGoesFirst = flag => localStorage.setItem(this.keyNames.playerGoesFirst, flag);
-
-  constructor() {
-  }
+  this.setPlayerIcon = icon => localStorage.setItem(this.keyNames.playerIcon, icon);
+  this.setComputerIcon = icon => localStorage.setItem(this.keyNames.computerIcon, icon);
+  this.setPlayerGoesFirst = flag => localStorage.setItem(this.keyNames.playerGoesFirst, flag);
 }
