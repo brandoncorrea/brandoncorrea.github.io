@@ -28,7 +28,7 @@ const togglePositiveClass = (id, flag) =>
   : removeClass(id, 'positive');
 
 window.onload = function(e) {
-  console.log('Version: 1.0.0');
+  console.log('Version: 1.0.1');
   var iconIsX = SettingsRepo.getPlayerIcon() === 'X';
   togglePositiveClass('userIconO', !iconIsX);
   togglePositiveClass('userIconX', iconIsX);
