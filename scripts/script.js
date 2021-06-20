@@ -1,6 +1,6 @@
-const Nav = new Navigation();
-const Settings = new SettingsRepository();
-const Game = new GameUI(Settings);
+// const Nav = new Navigation();
+// const Settings = new SettingsRepository();
+// const Game = new GameUI(Settings);
 
 const addClass = (id, className) =>
   document.getElementById(id).classList.add(className);
@@ -13,11 +13,11 @@ const togglePositiveClass = (id, flag) =>
 
 window.onload = function() {
   console.log('Version: 1.0.1');
-  var iconIsX = Settings.getPlayerIcon() === 'X';
-  togglePositiveClass('userIconO', !iconIsX);
-  togglePositiveClass('userIconX', iconIsX);
+  // var iconIsX = Settings.getPlayerIcon() === 'X';
+  // togglePositiveClass('userIconO', !iconIsX);
+  // togglePositiveClass('userIconX', iconIsX);
 
-  var playerGoesFirst = Settings.getPlayerGoesFirst();
-  togglePositiveClass('playerButton', playerGoesFirst);
-  togglePositiveClass('computerButton', !playerGoesFirst);
+  // var playerGoesFirst = Settings.getPlayerGoesFirst();
+  // togglePositiveClass('playerButton', playerGoesFirst);
+  // togglePositiveClass('computerButton', !playerGoesFirst);
 };
