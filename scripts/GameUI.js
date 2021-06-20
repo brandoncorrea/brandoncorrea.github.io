@@ -24,12 +24,17 @@ function GameUI(settingsRepository) {
   this.chooseSquare = (row, col) => {
     this.game.takePlayerTurn(row, col);
 
-    if (!this.game.gameIsOver())
+    if (this.game.userWon()) {
+      this.updateGameBoard();
+      alert('You Won!');
+    } else {
       this.game.takeComputerTurn();
-    
-    this.updateGameBoard();
-    if (this.game.gameIsOver())
-      alert('Game Over');
+      this.updateGameBoard();
+      if (this.game.computerWon())
+        alert('You Lost!');
+      else if (this.game.gameIsDraw())
+        alert('Draw!');
+    }
   }
 
   this.newGame = () => {
