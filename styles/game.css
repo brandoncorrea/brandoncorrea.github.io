@@ -1,0 +1,17 @@
+#game .square {
+  border: solid #000 1px;
+  height: 50px;
+  width: 50px;
+  display: inline-block;
+  text-align: center;
+  vertical-align: top;
+}
+
+#game .row {
+  display: flex;
+  justify-content: center;
+}
+
+#game .board {
+ background-color: #fff;
+}

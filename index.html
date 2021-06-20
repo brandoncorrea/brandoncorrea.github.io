@@ -2,46 +2,93 @@
 <html>
 <head>
   <title>Tic Tac Toe</title>
-  <link type="text/css" rel="stylesheet" href="stylesheet.css" />
-  <script src="script.js"></script>
+  <link type="text/css" rel="stylesheet" href="styles/stylesheet.css" />
+  <link type="text/css" rel="stylesheet" href="styles/game.css" />
+  <link type="text/css" rel="stylesheet" href="styles/home.css" />
+  <script src="scripts/SettingsRepository.js"></script>
+  <script src="scripts/TicTacToe.js"></script>
+  <script src="scripts/repository.js"></script>
+  <script src="scripts/script.js"></script>
+  <script src="scripts/home.js"></script>
+  <script src="scripts/game.js"></script>
 </head>
 <body>
-  <h1>Testing</h1>
-  <div class="table">
-    <div class="row">
-      <div id="square_00"
-        onClick="chooseSquare(event)" 
-        class="square"></div>
-      <div id="square_01"
-        onClick="chooseSquare(event)" 
-        class="square"></div>
-      <div id="square_02"
-        onClick="chooseSquare(event)" 
-        class="square"></div>
+  
+  <!-- Home -->
+  <div id="home" class="container">
+    <h1>Home</h1>
+    
+    <!-- Win/Loss -->
+    <div class="flex-table">
+      <div>Wins: 0</div>
+      <div>Losses: 0</div>
     </div>
-    <div class="row">
-      <div id="square_10"
-        onClick="chooseSquare(event)" 
-        class="square"></div>
-      <div id="square_11"
-        onClick="chooseSquare(event)" 
-        class="square"></div>
-      <div id="square_12"
-        onClick="chooseSquare(event)" 
-        class="square"></div>
+      
+    <div class="flex-table">
+      <!-- Player Icon -->
+      <div>
+        <h3>Player Icon</h3>
+        <div class="toggle-pair">
+          <button id="userIconX" onClick="updateIcon('X')">X</button>
+          <button id="userIconO" onClick="updateIcon('O')">O</button>
+        </div>
+      </div>
+      
+      <!-- Who goes first -->
+      <div>
+        <h3>Who goes first?</h3>
+        <div class="toggle-pair">
+          <button id="playerButton" onClick="updatePlayerGoesFirst(true)">Player</button>
+          <button id="computerButton" onClick="updatePlayerGoesFirst(false)">Computer</button>
+        </div>
+      </div>
     </div>
-    <div class="row">
-      <div id="square_20"
-        onClick="chooseSquare(event)" 
-        class="square"></div>
-      <div id="square_21"
-        onClick="chooseSquare(event)" 
-        class="square"></div>
-      <div id="square_22"
-        onClick="chooseSquare(event)" 
-        class="square"></div>
-    </div>
+    
+    <button class="positive" onClick="createNewGame()">New Game</button>
   </div>
-  <button onClick="test()">Test</button>
+  
+  <!-- Game -->
+  <div id="game" class="container">
+    <h1 class="center">Tic Tac Toe</h1>
+
+    <div class="board center">
+      <div class="row">
+        <div id="square_00"
+          onClick="chooseSquare(event)" 
+          class="square"></div>
+        <div id="square_01"
+          onClick="chooseSquare(event)" 
+          class="square"></div>
+        <div id="square_02"
+          onClick="chooseSquare(event)" 
+          class="square"></div>
+      </div>
+      <div class="row">
+        <div id="square_10"
+          onClick="chooseSquare(event)" 
+          class="square"></div>
+        <div id="square_11"
+          onClick="chooseSquare(event)" 
+          class="square"></div>
+        <div id="square_12"
+          onClick="chooseSquare(event)" 
+          class="square"></div>
+      </div>
+      <div class="row">
+        <div id="square_20"
+          onClick="chooseSquare(event)" 
+          class="square"></div>
+        <div id="square_21"
+          onClick="chooseSquare(event)" 
+          class="square"></div>
+        <div id="square_22"
+          onClick="chooseSquare(event)" 
+          class="square"></div>
+      </div>
+    </div>
+
+    <button class="negative" onClick="navigate('home')">Quit</button>
+  </div>
+
 </body>
 </html>

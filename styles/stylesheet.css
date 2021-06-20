@@ -1,0 +1,64 @@
+body {
+  margin: 0;
+}
+
+#game {
+  display: none;
+}
+
+.container {
+  padding: 10px;
+}
+
+.center, 
+h1 {
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* Buttons */
+button {
+  padding: 10px;
+  width: 100%;
+  background-color: #aaa;
+  border-radius: 10px;
+  border: solid #000 1px;
+  color: #fff;
+}
+
+button.positive {
+  background-color: rgb(16, 189, 0);
+}
+
+button.negative {
+  background-color: rgb(235, 0, 0);
+}
+
+/* toggle-pair */
+.toggle-pair {
+  display: flex;
+}
+
+.toggle-pair button {
+  max-width: 50%;
+}
+
+.toggle-pair :first-child {
+  border-radius: 10px 0 0 10px;
+  border-right: none;
+}
+
+.toggle-pair :last-child {
+  border-radius: 0 10px 10px 0;
+  border-left: none;
+}
+
+/* flex-table */
+.flex-table {
+  display: flex;
+  width: 100%;
+}
+
+.flex-table div {
+  margin: 0 auto;
+}
