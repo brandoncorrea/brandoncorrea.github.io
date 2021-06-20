@@ -1,8 +1,7 @@
 function onNewGameClicked() {
-  alert('onNewGameClicked');
   // Game.newGame();
   // Game.updateGameBoard();
-  // Nav.showGame();
+  Nav.showGame();
 }
 
 function onIconChanged(icon) {

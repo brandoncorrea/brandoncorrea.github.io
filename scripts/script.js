@@ -1,4 +1,4 @@
-// const Nav = new Navigation();
+const Nav = new Navigation();
 // const Settings = new SettingsRepository();
 // const Game = new GameUI(Settings);
 

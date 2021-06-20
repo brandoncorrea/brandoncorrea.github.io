@@ -8,5 +8,5 @@ function onSquareClicked(event) {
 }
 
 function onQuitGameClicked() {
-  //Nav.showHome();
+  Nav.showHome();
 }
