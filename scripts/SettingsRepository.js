@@ -11,7 +11,7 @@ class SettingsRepository {
     if (icon !== null)
       return icon;
     
-    if (this.getComputerIcon() === 'X')
+    if (localStorage.getItem(this.keyNames.computerIcon) === 'X')
       this.setPlayerIcon('O');
     else
       this.setPlayerIcon('X');
@@ -24,7 +24,7 @@ class SettingsRepository {
     if (icon !== null)
       return icon;
 
-    if (this.getPlayerIcon() === 'X')
+    if (localStorage.getItem(this.keyNames.playerIcon) === 'X')
       this.setComputerIcon('O');
     else
       this.setComputerIcon('X');
