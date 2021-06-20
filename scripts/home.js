@@ -1,23 +1,23 @@
 function createNewGame() {
   Game.newGame();
-  navigate('game');
+  Nav.showGame();
 }
 
 function updateIcon(icon) {
-  SettingsRepo.setPlayerIcon(icon);
-  var iconIsX = SettingsRepo.getPlayerIcon() === 'X';
+  Settings.setPlayerIcon(icon);
+  var iconIsX = Settings.getPlayerIcon() === 'X';
   if (iconIsX)
-    SettingsRepo.setComputerIcon('O');
+    Settings.setComputerIcon('O');
   else
-    SettingsRepo.setComputerIcon('X');
+    Settings.setComputerIcon('X');
 
   togglePositiveClass('userIconO', !iconIsX);
   togglePositiveClass('userIconX', iconIsX);
 }
 
 function updatePlayerGoesFirst(flag) {
-  SettingsRepo.setPlayerGoesFirst(flag);
-  var playerGoesFirst = SettingsRepo.getPlayerGoesFirst();
+  Settings.setPlayerGoesFirst(flag);
+  var playerGoesFirst = Settings.getPlayerGoesFirst();
   togglePositiveClass('computerButton', !playerGoesFirst);
   togglePositiveClass('playerButton', playerGoesFirst);
 }

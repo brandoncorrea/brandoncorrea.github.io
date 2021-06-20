@@ -1,14 +1,7 @@
-const SettingsRepo = new SettingsRepository();
-const Game = new TicTacToe(SettingsRepo);
+const Nav = new Navigation();
+const Settings = new SettingsRepository();
+const Game = new TicTacToe(Settings);
 
-function navigate(path) {
-  hide('home');
-  hide('game');
-  show(path);
-}
-
-const hide = id => setDisplay(id, 'none');
-const show = id => setDisplay(id, 'block');
 const check = id => setChecked(id, true);
 const uncheck = id => setChecked(id, false);
 
@@ -29,11 +22,11 @@ const togglePositiveClass = (id, flag) =>
 
 window.onload = function(e) {
   console.log('Version: 1.0.1');
-  var iconIsX = SettingsRepo.getPlayerIcon() === 'X';
+  var iconIsX = Settings.getPlayerIcon() === 'X';
   togglePositiveClass('userIconO', !iconIsX);
   togglePositiveClass('userIconX', iconIsX);
 
-  var playerGoesFirst = SettingsRepo.getPlayerGoesFirst();
+  var playerGoesFirst = Settings.getPlayerGoesFirst();
   togglePositiveClass('playerButton', playerGoesFirst);
   togglePositiveClass('computerButton', !playerGoesFirst);
 }

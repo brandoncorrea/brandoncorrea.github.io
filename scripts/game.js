@@ -23,3 +23,7 @@ function chooseSquare(event) {
   if (Game.gameIsOver())
     alert('Game Over');
 }
+
+function quitGame() {
+  Nav.showHome();
+}
