@@ -14,6 +14,9 @@ function testTicTacToeBotOnClick() {
   testBotTakesBottomRightCornerOnSecondTurnAfterGoingFirst();
   info ('Starting Test: testAllPossibleOutcomes');
   testAllPossibleOutcomes();
+
+  document.getElementById('passResults').innerHTML = results.passes;
+  document.getElementById('failResults').innerHTML = results.fails;
 }
 
 // Tests when the bot goes first, it always takes the top-left corner cell
@@ -81,7 +84,7 @@ function testAllPossibleOutcomes() {
     [0, 0, 0],
     [0, 0, 0]
   ];
-  
+
   testAllPossibleOutcomesBotGoesNext(table, playStack);
   testAllPossibleOutcomesUserGoesNext(table, playStack);
 }
