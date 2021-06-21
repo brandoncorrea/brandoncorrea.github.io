@@ -12,6 +12,8 @@ function TicTacToe(settingsRepository) {
     none: 0
   }
 
+  this.computerBot = new TicTacToeBot(this.playerFlags);
+
   this.hasTopLeftDiagonal = playerFlag => {
     for (var i = 0; i < this.table.length; i++)
       if (this.table[i][i] !== playerFlag)
@@ -22,7 +24,7 @@ function TicTacToe(settingsRepository) {
   this.hasBottomLeftDiagonal = playerFlag => {
     var row = this.table.length - 1;
     var col = 0;
-    for (; row > 0 && col < this.table.length; row--, col++)
+    for (; row >= 0 && col < this.table.length; row--, col++)
       if (this.table[row][col] !== playerFlag)
         return false;
     return true;
@@ -63,17 +65,29 @@ function TicTacToe(settingsRepository) {
     // All cells are full... return false if someone won
     return !this.userWon() && !this.computerWon();
   }
-  
-  this.takeComputerTurn = () => {
+
+  this.gameIsOver = () => {
+    if (this.userWon() || this.computerWon() || this.gameIsDraw())
+      return true;
+    
     for (var r = 0; r < this.table.length; r++)
       for (var c = 0; c < this.table[r].length; c++)
-        if (this.table[r][c] === this.playerFlags.none) {
-          this.table[r][c] = -1;
-          return;
-        }
+        if (this.table[r][c] === this.playerFlags.none)
+          return false;
+    return true;
+  }
+  
+  this.takeComputerTurn = () => {
+    if (this.gameIsOver())
+      return;
+    var cell = this.computerBot.getNextCell(this.table);
+    this.table[cell.row][cell.col] = this.playerFlags.computer;
   }
 
-  this.takePlayerTurn = (row, cell) => this.table[row][cell] = 1;
+  this.takePlayerTurn = (row, cell) => {
+    if (!this.gameIsOver())
+      this.table[row][cell] = this.playerFlags.user;
+  }
   
   // constructor
   if (!settingsRepository.getPlayerGoesFirst())
