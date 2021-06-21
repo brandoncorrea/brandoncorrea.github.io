@@ -208,7 +208,7 @@ function TicTacToeBot(playerFlags) {
     // Round 2
     if (table[1][1] === this.playerFlags.user)
       return this.getNextEmptyCorner(table);
-    if (this.hasTwoOpposingCorners(this.playerFlags.user))
+    if (this.hasTwoOpposingCorners(table, this.playerFlags.user))
       return this.getNextEmptySide(table);
     if (this.hasCorner(table, this.playerFlags.user) 
       && this.hasSide(table, this.playerFlags.user))
