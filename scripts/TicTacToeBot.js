@@ -1,6 +1,4 @@
 function TicTacToeBot(playerFlags) {
-  this.playerFlags = playerFlags;
-
   // Returns the total number of plays for the player
   this.getNumberOfPlays = (table, playerFlag) => {
     var count = 0;
@@ -50,12 +48,12 @@ function TicTacToeBot(playerFlags) {
   // True if top-diagonal has 2 player flags and 1 empty
   this.hasTwoInTopDiagonal = (table, playerFlag) => 
     this.getCountInTopDiagonal(table, playerFlag) === 2 && 
-    this.getCountInTopDiagonal(table, this.playerFlags.none) === 1;
+    this.getCountInTopDiagonal(table, playerFlags.none) === 1;
 
   // True if bottom-diagonal has 2 player flags and 1 empty
   this.hasTwoInBottomDiagonal = (table, playerFlag) => 
     this.getCountInBottomDiagonal(table, playerFlag) === 2 &&
-    this.getCountInBottomDiagonal(table, this.playerFlags.none) === 1;
+    this.getCountInBottomDiagonal(table, playerFlags.none) === 1;
 
   // Returns the cell that will cause the player to win on their next play
   this.getNextWinningCell = (table, playerFlag) => {
@@ -76,62 +74,62 @@ function TicTacToeBot(playerFlags) {
 
   // Returns the cell that must be played next
   this.findPriorityCell = table => {
-    var winningCell = this.getNextWinningCell(table, this.playerFlags.computer);
+    var winningCell = this.getNextWinningCell(table, playerFlags.computer);
     if (winningCell !== null)
       return winningCell;
-    return this.getNextWinningCell(table, this.playerFlags.user);
+    return this.getNextWinningCell(table, playerFlags.user);
   }
 
   // Returns the first blank cell in a row
   this.getBlankCellInRow = (table, row) => {
     for (var col = 0; col < table[row].length; col++)
-      if (table[row][col] === this.playerFlags.none)
-        return { row, col };
+      if (table[row][col] === playerFlags.none)
+        return new Cell(row, col);
     return null;
   }
 
   // Returns the first blank cell in a column
   this.getBlankCellInColumn = (table, col) => {
     for (var row = 0; row < table.length; row++)
-      if (table[row][col] === this.playerFlags.none)
-        return { row, col };
+      if (table[row][col] === playerFlags.none)
+        return new Cell(row, col);
     return null;
   }
 
   // Returns the first blank cell in the bottom-left diagonal
   this.getBlankCellInBottomDiagonal = table => {
-    for (var row = table.length - 1, col = 0; 
-      row >= 0 && col < table.length; 
-      row--, col++)
-        if (table[row][col] === this.playerFlags.none)
-          return { row, col };
+    var row = table.length - 1;
+    var col = 0;
+    for (; row >= 0 && col < table.length; row--, col++)
+        if (table[row][col] === playerFlags.none)
+          return new Cell(row, col);
     return null;
   }
 
   // Returns the first blank in the top-left diagonal
   this.getBlankCellInTopDiagonal = table => {
     for (var i = 0; i < table.length; i++)
-      if (table[i][i] === this.playerFlags.none)
-        return { row: i, col: i };
+      if (table[i][i] === playerFlags.none)
+        return new Cell(i, i);
     return null;
   }
 
   // True if player is 1 away from winning row
   this.hasTwoInRow = (table, row, playerFlag) => 
     this.getCountInRow(table, row, playerFlag) === 2 && 
-    this.getCountInRow(table, row, this.playerFlags.none) === 1;
+    this.getCountInRow(table, row, playerFlags.none) === 1;
 
   // True if player is 1 away from winning column
   this.hasTwoInColumn = (table, col, playerFlag) => 
     this.getCountInColumn(table, col, playerFlag) === 2 && 
-    this.getCountInColumn(table, col, this.playerFlags.none) === 1;
+    this.getCountInColumn(table, col, playerFlags.none) === 1;
 
   // Return the first empty cell
   this.getNextEmptyCell = table => {
     for (var r = 0; r < table.length; r++)
       for (var c = 0; c < table[r].length; c++)
-        if (table[r][c] === this.playerFlags.none)
-          return { row: r, col: c };
+        if (table[r][c] === playerFlags.none)
+          return new Cell(r, c);
     return null;
   }
 
@@ -139,97 +137,106 @@ function TicTacToeBot(playerFlags) {
   this.getLastResortCell = table => {
     // Get a blank cell from a row or column that has the computer flag and two blanks
     for (var i = 0; i < table.length; i++) {
-      if (this.getCountInColumn(table, i, this.playerFlags.computer) === 1
-        && this.getCountInColumn(table, i, this.playerFlags.none) === 2)
+      if (this.getCountInColumn(table, i, playerFlags.computer) === 1
+        && this.getCountInColumn(table, i, playerFlags.none) === 2)
         return this.getBlankCellInColumn(table, i);
-      else if (this.getCountInRow(table, i, this.playerFlags.computer) === 1
-        && this.getCountInRow(table, i, this.playerFlags.none) === 2)
+      else if (this.getCountInRow(table, i, playerFlags.computer) === 1
+        && this.getCountInRow(table, i, playerFlags.none) === 2)
         return this.getBlankCellInRow(table, i);
     }
     return this.getNextEmptyCell(table);
   }
 
+  // Returns the first cell in the collection that is empty, or null if none are empty
   this.getFirstEmptyOrNull = (table, cells) => {
-    var cell = cells.find(i => table[i.row][i.col] === this.playerFlags.none);
+    var cell = cells.find(i => table[i.row][i.col] === playerFlags.none);
     if (cell === undefined)
       return null;
     return cell;
   }
 
+  // Returns an empty corner, or null if all are taken
   this.getNextEmptyCorner = table => 
     this.getFirstEmptyOrNull(table, [
-      { row: 0, col: 0 },
-      { row: 2, col: 2 },
-      { row: 0, col: 2 },
-      { row: 2, col: 0 }
+      new Cell(0, 0),
+      new Cell(2, 2),
+      new Cell(0, 2),
+      new Cell(2, 0)
     ]);
 
+  // Returns an empty side cell, or null if all are taken
   this.getNextEmptySide = table => 
     this.getFirstEmptyOrNull(table, [
-      { row: 0, col: 1 },
-      { row: 1, col: 0 },
-      { row: 1, col: 2 },
-      { row: 2, col: 1 }
+      new Cell(0, 1),
+      new Cell(1, 0),
+      new Cell(1, 2),
+      new Cell(2, 1)
     ]);
   
+  // True if the player has a side cell
   this.hasSide = (table, playerFlag) => 
     table[0][1] === playerFlag || 
     table[1][0] === playerFlag || 
     table[1][2] === playerFlag || 
     table[2][1] === playerFlag;
 
+  // True if the player has a corner cell
   this.hasCorner = (table, playerFlag) =>
     table[0][0] === playerFlag || 
     table[0][2] === playerFlag || 
     table[2][0] === playerFlag || 
     table[2][2] === playerFlag;
 
+  // True if the player has two opposite corners
   this.hasTwoOpposingCorners = (table, playerFlag) =>
     table[0][0] === playerFlag && table[2][2] === playerFlag ||
     table[0][2] === playerFlag && table[2][0] === playerFlag;
 
+  // Returns the first cell where the flag does not appear in that row or column
   this.getCellInUnclaimedRowAndColumn = (table, opponentFlag) => {
     for (var r = 0; r < table.length; r++)
       for (var c = 0; c < table[r].length; c++)
         if (this.getCountInRow(table, r, opponentFlag) === 0
         && this.getCountInColumn(table, c, opponentFlag) === 0)
-          return { row: r, col: c};
+          return new Cell(r, c);
     return null;
   }
   
+  // Returns the next cell to play when the user goes first
   this.getNextCellWhenUserGoesFirst = (table, computerPlays) => {
     if (computerPlays > 1) return;
     if (computerPlays === 0) { // Round 1
-      if (table[1][1] === this.playerFlags.user)
+      if (table[1][1] === playerFlags.user)
         return this.getNextEmptyCorner(table);
-      return { row: 1, col: 1 }; // Take center
+      return new Cell(1, 1); // Take center
     }
     
     // Round 2
-    if (table[1][1] === this.playerFlags.user)
+    if (table[1][1] === playerFlags.user)
       return this.getNextEmptyCorner(table);
-    if (this.hasTwoOpposingCorners(table, this.playerFlags.user))
+    if (this.hasTwoOpposingCorners(table, playerFlags.user))
       return this.getNextEmptySide(table);
-    if (this.hasCorner(table, this.playerFlags.user) 
-      && this.hasSide(table, this.playerFlags.user))
-      return this.getCellInUnclaimedRowAndColumn(table, this.playerFlags.user);
+    if (this.hasCorner(table, playerFlags.user) 
+      && this.hasSide(table, playerFlags.user))
+      return this.getCellInUnclaimedRowAndColumn(table, playerFlags.user);
 
     // User has two sides
-    if (table[0][1] === this.playerFlags.user) { // User has top side
-      if (table[1][2] === this.playerFlags.user) // User has right side
-        return { row: 0, col: 2 }; // Take top-right corner
-      return { row: 0, col: 0 }; // Take top-left corner 
+    if (table[0][1] === playerFlags.user) { // User has top side
+      if (table[1][2] === playerFlags.user) // User has right side
+        return new Cell(0, 2); // Take top-right corner
+      return new Cell(0, 0); // Take top-left corner 
     }
-    if (table[2][1] === this.playerFlags.user) { // User has bottom side
-      if (table[1][0] === this.playerFlags.user) // User has left side
-        return { row: 2, col: 0 }; // Take bottom-left corner
-      return { row: 2, col: 2 }; // Take bottom-right corner
+    if (table[2][1] === playerFlags.user) { // User has bottom side
+      if (table[1][0] === playerFlags.user) // User has left side
+        return new Cell(2, 0); // Take bottom-left corner
+      return new Cell(2, 2); // Take bottom-right corner
     }
   }
 
+  // Returns the next cell to be played by the computer
   this.getNextCell = table => {
-    var userPlays = this.getNumberOfPlays(table, this.playerFlags.user);
-    var computerPlays = this.getNumberOfPlays(table, this.playerFlags.computer);
+    var userPlays = this.getNumberOfPlays(table, playerFlags.user);
+    var computerPlays = this.getNumberOfPlays(table, playerFlags.computer);
 
     // Cell is for computer to win or to prevent user from winning
     var cell = this.findPriorityCell(table);
