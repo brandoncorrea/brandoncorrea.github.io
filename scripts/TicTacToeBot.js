@@ -126,7 +126,16 @@ function TicTacToeBot(playerFlags) {
     this.getCountInColumn(table, col, playerFlag) === 2 && 
     this.getCountInColumn(table, col, this.playerFlags.none) === 1;
 
-  // When all else fails..
+  // Return the first empty cell
+  this.getNextEmptyCell = table => {
+    for (var r = 0; r < table.length; r++)
+      for (var c = 0; c < table[r].length; c++)
+        if (table[r][c] === this.playerFlags.none)
+          return { row: r, col: c };
+    return null;
+  }
+
+  // When all else fails, just return something
   this.getLastResortCell = table => {
     // Get a blank cell from a row or column that has the computer flag and two blanks
     for (var i = 0; i < table.length; i++) {
@@ -137,12 +146,7 @@ function TicTacToeBot(playerFlags) {
         && this.getCountInRow(table, i, this.playerFlags.none) === 2)
         return this.getBlankCellInRow(table, i);
     }
-
-    // Everything after round 3... just find an empty cell
-    for (var r = 0; r < table.length; r++)
-      for (var c = 0; c < table[r].length; c++)
-        if (table[r][c] === this.playerFlags.none)
-          return { row: r, col: c };
+    return this.getNextEmptyCell(table);
   }
 
   this.getFirstEmptyOrNull = (table, cells) => {
@@ -168,58 +172,59 @@ function TicTacToeBot(playerFlags) {
       { row: 2, col: 1 }
     ]);
   
+  this.hasSide = (table, playerFlag) => 
+    table[0][1] === playerFlag || 
+    table[1][0] === playerFlag || 
+    table[1][2] === playerFlag || 
+    table[2][1] === playerFlag;
+
+  this.hasCorner = (table, playerFlag) =>
+    table[0][0] === playerFlag || 
+    table[0][2] === playerFlag || 
+    table[2][0] === playerFlag || 
+    table[2][2] === playerFlag;
+
+  this.hasTwoOpposingCorners = (table, playerFlag) =>
+    table[0][0] === playerFlag && table[2][2] === playerFlag ||
+    table[0][2] === playerFlag && table[2][0] === playerFlag;
+
+  this.getCellInUnclaimedRowAndColumn = (table, opponentFlag) => {
+    for (var r = 0; r < table.length; r++)
+      for (var c = 0; c < table[r].length; c++)
+        if (this.getCountInRow(table, r, opponentFlag) === 0
+        && this.getCountInColumn(table, c, opponentFlag) === 0)
+          return { row: r, col: c};
+    return null;
+  }
+  
   this.getNextCellWhenUserGoesFirst = (table, computerPlays) => {
     if (computerPlays > 1) return;
     if (computerPlays === 0) { // Round 1
       if (table[1][1] === this.playerFlags.user)
-        return { row: 0, col: 0 }; // User has center, take a corner
+        return this.getNextEmptyCorner(table);
       return { row: 1, col: 1 }; // Take center
     }
-
+    
     // Round 2
-    if (table[1][1] === this.playerFlags.computer) { // we have center
-      if (table[0][0] === this.playerFlags.user && table[2][2] === this.playerFlags.user 
-        || table[0][2] === this.playerFlags.user && table[2][0] === this.playerFlags.user) // User has 2 opposing corners..
-        return this.getNextEmptySide(table);
-
-      // Handle when user has a corner..
-      if (table[0][0] === this.playerFlags.user) {
-        if (table[1][2] === this.playerFlags.none)
-          return  { row: 1, col: 2 };
-        return { row: 2, col: 1 };
-      }
-      if (table[0][2] === this.playerFlags.user) {
-        if (table[1][0] === this.playerFlags.none)
-          return { row: 1, col: 0 };
-        return { row: 2, col: 1 };
-      }
-      if (table[2][0] === this.playerFlags.user) {
-        if (table[0][1] === this.playerFlags.none)
-          return { row: 0, col: 1 };
-        return { row: 1, col: 2 };
-      }
-      if (table[2][2] === this.playerFlags.user) {
-        if (table[0][1] === this.playerFlags.none)
-          return { row: 0, col: 1};
-        return { row: 1, col: 0 };
-      }
-
-      // User has two sides
-      if (table[0][1] === this.playerFlags.user) { // User has top side
-        if (table[1][2] === this.playerFlags.user) // User has right side
-          return { row: 0, col: 2 }; // Take top-right corner
-        return { row: 0, col: 0 }; // Take top-left corner 
-      }
-      if (table[2][1] === this.playerFlags.user) { // User has bottom side
-        if (table[1][0] === this.playerFlags.user) // User has left side
-          return { row: 2, col: 0 }; // Take bottom-left corner
-        return { row: 2, col: 2 }; // Take bottom-right corner
-      }
-    }
-
-    // We have [0][0]
-    if (table[2][2] === this.playerFlags.user)
+    if (table[1][1] === this.playerFlags.user)
       return this.getNextEmptyCorner(table);
+    if (this.hasTwoOpposingCorners(this.playerFlags.user))
+      return this.getNextEmptySide(table);
+    if (this.hasCorner(table, this.playerFlags.user) 
+      && this.hasSide(table, this.playerFlags.user))
+      return this.getCellInUnclaimedRowAndColumn(table, this.playerFlags.user);
+
+    // User has two sides
+    if (table[0][1] === this.playerFlags.user) { // User has top side
+      if (table[1][2] === this.playerFlags.user) // User has right side
+        return { row: 0, col: 2 }; // Take top-right corner
+      return { row: 0, col: 0 }; // Take top-left corner 
+    }
+    if (table[2][1] === this.playerFlags.user) { // User has bottom side
+      if (table[1][0] === this.playerFlags.user) // User has left side
+        return { row: 2, col: 0 }; // Take bottom-left corner
+      return { row: 2, col: 2 }; // Take bottom-right corner
+    }
   }
 
   this.getNextCell = table => {
@@ -230,12 +235,9 @@ function TicTacToeBot(playerFlags) {
     var cell = this.findPriorityCell(table);
     if (cell !== null)
       return cell;
-
-    // User went first
-    if (userPlays !== computerPlays)
+    else if (userPlays !== computerPlays) // User went first
       cell = this.getNextCellWhenUserGoesFirst(table, computerPlays);
-    // Computer went first
-    else
+    else // Computer went first
       cell = this.getNextEmptyCorner(table);
     
     if (cell !== null && cell !== undefined)
