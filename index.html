@@ -7,6 +7,7 @@
   <link type="text/css" rel="stylesheet" href="styles/home.css" />
 
   <script src="scripts/TicTacToeBot.js" type="text/javascript"></script>
+  <script src="scripts/ScoreRepository.js" type="text/javascript"></script>
   <script src="scripts/Navigation.js" type="text/javascript"></script>
   <script src="scripts/SettingsRepository.js" type="text/javascript"></script>
   <script src="scripts/TicTacToe.js" type="text/javascript"></script>
@@ -31,10 +32,11 @@
     
     <!-- Win/Loss -->
     <div class="flex-table">
-      <div>Wins: 0</div>
-      <div>Losses: 0</div>
+      <div>Wins: <span id="winsLabel"></span></div>
+      <div>Draws: <span id="drawsLabel"></span></div>
+      <div>Losses: <span id="lossesLabel"></span></div>
     </div>
-      
+    
     <div class="flex-table">
       <!-- Player Icon -->
       <div>
@@ -55,14 +57,16 @@
       </div>
     </div>
     
-    <button class="positive" onclick="onNewGameClicked()">New Game</button>
+    <div class="button-group">
+      <button class="positive" onclick="onNewGameClicked()">New Game</button>
+    </div>
   </div>
   
   <!-- Game -->
   <div id="game" class="container">
-    <h1 class="center">Tic Tac Toe</h1>
-
-    <div class="board center">
+    <h1>Tic Tac Toe</h1>
+    <h3 id="gameMessage"></h3>
+    <div class="board">
       <div class="row">
         <div id="square_00"
           onclick="onSquareClicked(event)" 
@@ -98,7 +102,9 @@
       </div>
     </div>
 
-    <button class="negative" onclick="onQuitGameClicked()">Quit</button>
+    <div class="button-group">
+      <button class="negative" onclick="onQuitGameClicked()">Quit</button>
+    </div>
   </div>
 
 </body>

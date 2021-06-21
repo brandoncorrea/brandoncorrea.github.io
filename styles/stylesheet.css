@@ -10,13 +10,12 @@ body {
   padding: 10px;
 }
 
-.center, 
 h1 {
   text-align: center;
-  margin: 0 auto;
 }
 
 /* Buttons */
+
 button {
   padding: 10px;
   width: 100%;
@@ -32,6 +31,10 @@ button.positive {
 
 button.negative {
   background-color: rgb(235, 0, 0);
+}
+
+.button-group {
+  padding: 25px 0;
 }
 
 /* toggle-pair */

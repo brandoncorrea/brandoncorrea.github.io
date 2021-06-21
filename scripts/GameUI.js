@@ -1,10 +1,12 @@
-function GameUI(settingsRepository) {
+function GameUI(settingsRepository, scoreRepository) {
   this.settings = settingsRepository;
   this.game;
+  this.message = ''
 
-  this.setCellIcon = (row, cell, icon) => {
-    document.getElementById(`square_${row}${cell}`).innerHTML = icon;
-  }
+  this.setCellIcon = (row, cell, icon) =>
+    icon === '' 
+    ? document.getElementById(`square_${row}${cell}`).innerHTML = icon
+    : document.getElementById(`square_${row}${cell}`).innerHTML = `<p>${icon}</p>`;
 
   this.updateGameBoard = () => {
     var playerIcon = Settings.getPlayerIcon();
@@ -21,23 +23,41 @@ function GameUI(settingsRepository) {
       }
   }
 
-  this.chooseSquare = (row, col) => {
-    this.game.takePlayerTurn(row, col);
+  this.updateMessage = () => {
+    var message = document.getElementById('gameMessage');
+    if (this.game.userWon())
+      message.innerHTML = 'You Won!';
+    else if (this.game.computerWon())
+      message.innerHTML = 'Computer Won!';
+    else if (this.game.gameIsDraw())
+      message.innerHTML = 'Draw!';
+    else
+      message.innerHTML = '';
+  }
 
-    if (this.game.userWon()) {
-      this.updateGameBoard();
-      alert('You Won!');
-    } else {
+  this.chooseSquare = (row, col) => {
+    if (this.game.gameIsOver())
+      return;
+    
+    this.game.takePlayerTurn(row, col);
+    if (this.game.userWon())
+      scoreRepository.addWin();
+    else if (this.game.gameIsDraw())
+      scoreRepository.addDraw();
+    else {
       this.game.takeComputerTurn();
-      this.updateGameBoard();
       if (this.game.computerWon())
-        alert('You Lost!');
+        scoreRepository.addLoss();
       else if (this.game.gameIsDraw())
-        alert('Draw!');
+        scoreRepository.addDraw();
     }
+
+    this.updateMessage();
+    this.updateGameBoard();
   }
 
   this.newGame = () => {
     this.game = new TicTacToe(this.settings);
+    this.updateMessage();
   }
 }

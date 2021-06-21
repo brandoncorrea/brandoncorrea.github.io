@@ -178,7 +178,8 @@ function TicTacToeBot(playerFlags) {
 
     // Round 2
     if (table[1][1] === this.playerFlags.computer) { // we have center
-      if (table[0][0] === table[2][2] && table[0][2] === table[2][0]) // User has 2 opposing corners..
+      if (table[0][0] === this.playerFlags.user && table[2][2] === this.playerFlags.user 
+        || table[0][2] === this.playerFlags.user && table[2][0] === this.playerFlags.user) // User has 2 opposing corners..
         return this.getNextEmptySide(table);
 
       // Handle when user has a corner..
@@ -201,6 +202,18 @@ function TicTacToeBot(playerFlags) {
         if (table[0][1] === this.playerFlags.none)
           return { row: 0, col: 1};
         return { row: 1, col: 0 };
+      }
+
+      // User has two sides
+      if (table[0][1] === this.playerFlags.user) { // User has top side
+        if (table[1][2] === this.playerFlags.user) // User has right side
+          return { row: 0, col: 2 }; // Take top-right corner
+        return { row: 0, col: 0 }; // Take top-left corner 
+      }
+      if (table[2][1] === this.playerFlags.user) { // User has bottom side
+        if (table[1][0] === this.playerFlags.user) // User has left side
+          return { row: 2, col: 0 }; // Take bottom-left corner
+        return { row: 2, col: 2 }; // Take bottom-right corner
       }
     }
 
